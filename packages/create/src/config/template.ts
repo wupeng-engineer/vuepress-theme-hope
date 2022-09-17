@@ -120,10 +120,18 @@ const updateGitIgnore = (dir: string): void => {
 };
 
 export const generateTemplate = async (
-  packageManager: PackageManager,
-  dir: string,
-  lang: Lang,
-  message: CreateI18n
+  targetDir: string,
+  {
+    packageManager,
+    lang,
+    message,
+    preset,
+  }: {
+    packageManager: PackageManager;
+    lang: Lang;
+    message: CreateI18n;
+    preset: "blog" | "doc";
+  }
 ): Promise<void> => {
   const { i18n, workflow } = await inquirer.prompt<{
     i18n: boolean;
@@ -132,18 +140,24 @@ export const generateTemplate = async (
     {
       name: "i18n",
       type: "confirm",
-      message: message.i18nMessage,
+      message: message.question.i18n,
       default: false,
     },
     {
       name: "workflow",
       type: "confirm",
-      message: message.workflowMessage,
+      message: message.question.workflow,
       default: true,
     },
   ]);
 
-  console.log(message.template);
+  console.log(message.flow.generateTemplate);
+
+  // copy public assets
+  copy(
+    resolve(__dirname, "../assets/public"),
+    resolve(process.cwd(), targetDir, "./vuepress/public")
+  );
 
   const templateFolder = i18n
     ? "i18n"
@@ -153,7 +167,7 @@ export const generateTemplate = async (
 
   copy(
     resolve(__dirname, "../template", templateFolder),
-    resolve(process.cwd(), dir)
+    resolve(process.cwd(), targetDir)
   );
 
   if (workflow) {
@@ -163,7 +177,7 @@ export const generateTemplate = async (
 
     writeFileSync(
       resolve(workflowDir, "deploy-docs.yml"),
-      getWorkflowContent(packageManager, dir, lang),
+      getWorkflowContent(packageManager, targetDir, lang),
       { encoding: "utf-8" }
     );
   }
@@ -171,7 +185,7 @@ export const generateTemplate = async (
   // git related
   const isGitRepo = checkGitRepo();
 
-  if (isGitRepo) updateGitIgnore(dir);
+  if (isGitRepo) updateGitIgnore(targetDir);
   else if (checkGitInstalled()) {
     const { git } = await inquirer.prompt<{
       git: boolean;
@@ -179,14 +193,14 @@ export const generateTemplate = async (
       {
         name: "git",
         type: "confirm",
-        message: message.gitMessage,
+        message: message.question.git,
         default: true,
       },
     ]);
 
     if (git) {
       execaCommandSync("git init");
-      updateGitIgnore(dir);
+      updateGitIgnore(targetDir);
     }
   }
 };

@@ -13,6 +13,8 @@ import "../styles/category.scss";
 export default defineComponent({
   name: "CategoryInfo",
 
+  inheritAttrs: false,
+
   props: {
     category: {
       type: Array as PropType<PageCategory[]>,
@@ -44,31 +46,36 @@ export default defineComponent({
             },
             [
               h(CategoryIcon),
-              h("ul", { class: "categories-wrapper" }, [
-                ...props.category.map(({ name, path }) =>
+              h(
+                "ul",
+                { class: "categories-wrapper" },
+                props.category.map(({ name, path }) =>
                   h(
                     "li",
-                    {
-                      class: [
-                        "category",
-                        {
-                          // TODO: magic number 9 is tricky here
-                          [`category${generateIndexfromHash(name, 9)}`]:
-                            !props.pure,
-                          clickable: path,
-                        },
-                      ],
-                      role: path ? "navigation" : "",
-                      onClick: () => navigate(path),
-                    },
-                    name
+                    h(
+                      "span",
+                      {
+                        class: [
+                          "category",
+                          {
+                            // TODO: magic number 9 is tricky here
+                            [`category${generateIndexfromHash(name, 9)}`]:
+                              !props.pure,
+                            clickable: path,
+                          },
+                        ],
+                        role: path ? "navigation" : "",
+                        onClick: () => navigate(path),
+                      },
+                      name
+                    )
                   )
-                ),
-                h("meta", {
-                  property: "articleSection",
-                  content: props.category.map(({ name }) => name).join(","),
-                }),
-              ]),
+                )
+              ),
+              h("meta", {
+                property: "articleSection",
+                content: props.category.map(({ name }) => name).join(","),
+              }),
             ]
           )
         : null;

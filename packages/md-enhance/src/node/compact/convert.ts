@@ -15,7 +15,13 @@ export const convertOptions = (
     deprecatedOption: "mdImport",
     newOption: "include",
   });
+  deprecatedLogger({
+    options,
+    deprecatedOption: "tex",
+    newOption: "katex",
+  });
 
+  droppedLogger(options, "enableAll");
   droppedLogger(options, "lineNumbers");
   droppedLogger(options, "imageFix");
 };

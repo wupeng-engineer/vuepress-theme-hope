@@ -307,11 +307,14 @@ export const tabs: PluginWithOptions<TabOptions> = (
       }
     }
 
-    return `<${component} :data='${
+    const data = basicData.map((item, index) => ({
+      ...item,
+      ...customData[index],
+    }));
+
+    return `<${component} id="${index}" :data='${
       // single quote will break @vue/compiler-sfc
-      JSON.stringify(
-        basicData.map((item, index) => ({ ...item, ...customData[index] }))
-      ).replace(/'/g, "&#39")
+      JSON.stringify(data).replace(/'/g, "&#39")
     }'${activeIndex !== -1 ? ` :active="${activeIndex}"` : ""}${
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       meta.id ? ` tab-id="${meta.id as string}"` : ""

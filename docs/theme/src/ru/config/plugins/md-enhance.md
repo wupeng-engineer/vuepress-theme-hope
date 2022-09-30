@@ -182,14 +182,25 @@ interface TaskListOptions {
 }
 ```
 
-### tex
+### katex
 
-- Тип: `KatexOptions | boolean`
+- Тип: `KatexOptions & { mhchem?: boolean } | boolean`
 - По умолчанию: `false`
 
-Включить ли поддержку синтаксиса $\TeX$. Вы можете передать объект в конфигурацию $\KaTeX$.
+Включить ли поддержку синтаксиса $\TeX$ через $\KaTeX$. Вы можете передать объект в конфигурацию $\KaTeX$.
+
+В частности, вы можете включить расширение mhchem с помощью `katex.mhchem: true`.
 
 Доступные варианты смотрите в [Документации Katex](https://katex.org/docs/options.html).
+
+### mathjax
+
+- Type: `MathJaxOptions | boolean`
+- Default: `false`
+
+Включить ли поддержку синтаксиса $\TeX$ через Math Jax. Вы можете передать объект в конфигурацию Math Jax.
+
+Доступные варианты смотрите в [исходном коде](https://github.com/vuepress-theme-hope/vuepress-theme-hope/tree/main/packages/md-enhance/src/shared/mathjax.ts).
 
 ### flowchart
 
@@ -253,7 +264,7 @@ interface TaskListOptions {
 
 ### playground
 
-- Type: `PlaygroundGlobalOptions`
+- Тип: `PlaygroundGlobalOptions`
 
   ```ts
   import type { CompilerOptions } from "typescript";
@@ -370,13 +381,13 @@ interface TaskListOptions {
   }
   ```
 
-- Required: No
+- Обязательный: Нет
 
-Playground options.
+Варианты плейграунда.
 
 ### vuePlayground
 
-- Type: `VuePlaygroundOptions | boolean`
+- Тип: `VuePlaygroundOptions | boolean`
 
   ```ts
   interface VuePlaygroundOptions {
@@ -455,9 +466,9 @@ Playground options.
   }
   ```
 
-- Default: `false`
+- По умолчанию: `false`
 
-Whether to enable vue playground support.
+Включить ли поддержку Vue Playground.
 
 ### demo
 

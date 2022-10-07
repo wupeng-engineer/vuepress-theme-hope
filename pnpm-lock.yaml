@@ -1167,7 +1167,7 @@ importers:
       fflate: ^0.7.4
       ora: ^6.1.2
       rimraf: 3.0.2
-      vite: 3.0.9
+      vite: 3.1.6
       vue: ^3.2.40
       vue-router: ^4.1.5
     dependencies:
@@ -1187,7 +1187,7 @@ importers:
       '@vuepress/bundler-webpack': 2.0.0-beta.51
       '@vuepress/core': 2.0.0-beta.51
       rimraf: 3.0.2
-      vite: 3.0.9
+      vite: 3.1.6
 
   packages/sitemap2:
     specifiers:
